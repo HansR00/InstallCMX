@@ -17,6 +17,8 @@ How to  run:
 - Copy the CumulusMX distribution zip(s) to that same directory. You may have more 
   than one distribution in the same directory. You can give the buildnumber to 
   install as commandline argument.
+  
+- Stop CumulusMX
 
 - Run InstallCMX and confirm / fill in on the console where you wish to install (or 
   update) CMX. 
@@ -31,6 +33,8 @@ How to  run:
   * NOTE: In an existing installation with modified files, make sure they are in a 
     safe place. If they have the same name as files in the distribution they will 
     be overwritten.
+
+- Start CumulusMX
 
 - After the installation, there is a log file. Check the logfile to see everything
   has gone well.

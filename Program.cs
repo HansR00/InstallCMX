@@ -57,14 +57,17 @@ namespace InstallCMX
       Sup.LogDebugMessage($"CMX multiplatform installer version {Support.Version()} - {Support.Copyright()}");
 
       CommandLineArgs(args);        // Set the version to install
+
       ArchiveToInstall = SetArchiveToInstall();
-      SetInstallationDir();
+      InstallDirectory = SetInstallationDir();
 
       if (string.IsNullOrEmpty(ArchiveToInstall) )
       {
         Sup.LogDebugMessage("No Archive to install found... nothing to do... Exiting.");
         Environment.Exit(0); // Nothing to Do
       }
+
+      Sup.LogDebugMessage($"{(FirstInstall ? "Installing" : "Updating")} {ArchiveToInstall} in {InstallDirectory}\n");
 
       //
       // We know the installation directory and the build number. We found the Archive (if it is empty => Exit!!)
@@ -95,6 +98,8 @@ namespace InstallCMX
             entryName = entry.FullName;
             destinationPath = Path.Combine(InstallDirectory, entryName.Remove(0, CMXDirstring.Length));
 
+            // Provide for the  fact that the Path.Combine method does not work if the Path actually contains a mix of \ and /
+            //
             if (Environment.OSVersion.Platform.Equals(PlatformID.Win32NT))
               if (destinationPath[destinationPath.Length - 1] == '/') destinationPath = destinationPath.Substring(0, destinationPath.Length - 1) + "\\";
 
@@ -145,7 +150,9 @@ namespace InstallCMX
       {
         Sup.LogDebugMessage("Installation of CMX completed. ");
         Sup.LogDebugMessage("If it is your first installation, please setup CumulusMX according to the instructions and complete the startup/shutdown setup");
-        Sup.LogDebugMessage("If it is an Update of your installation, just restart CumulusMX.");
+        Sup.LogDebugMessage("If it is an Update of your installation, then:");
+        Sup.LogDebugMessage("   1) Check the /webfiles/ directory to see if any modifications need to be moved to remote and do so;");
+        Sup.LogDebugMessage("   2) Restart CumulusMX.");
       }
 
       Console.WriteLine("Done");
@@ -153,7 +160,7 @@ namespace InstallCMX
       Sup.Dispose();
     }
 
-    void SetInstallationDir()
+    string SetInstallationDir()
     {
       List<string> InstallDirs;
 
@@ -185,9 +192,8 @@ namespace InstallCMX
       // Check where CMX is installed. If not installed then set FirstInstall = true; otherwise choose one of the installs or a new one
 
       InstallDirs = SearchForCMX();
-      InstallDirectory = ConfirmInstallDir(InstallDirs);
-
-      Sup.LogDebugMessage($"{(FirstInstall ? "Installing" : "Updating")} CMX in {InstallDirectory}\n");
+      
+      return ConfirmInstallDir(InstallDirs);
     } // Initialise
 
     List<string> SearchForCMX()
@@ -195,7 +201,7 @@ namespace InstallCMX
       List<string> resultDirs = new List<string>();
 
       string[] tmpDirs;
-      string[] resultFiles = null;
+      string[] resultFiles;
 
       // Path.DirectorySeparatorChar.ToString()
       tmpDirs = Directory.GetDirectories("/");
@@ -283,7 +289,7 @@ namespace InstallCMX
       else if (InstallDirs.Count == 1)
       {
         thisInstallDir = InstallDirs[0];
-        Console.Write($"Found an installation on: {InstallDirectory}");
+        Console.WriteLine($"Found an installation on: {InstallDirectory}");
       }
       else
       {
@@ -360,8 +366,10 @@ namespace InstallCMX
       else if (Archives.Length == 1)
       {
         thisArchive = Archives[0];
-        Console.Write($"Found one Archive to install: {thisArchive}");
+        Console.WriteLine($"Found one Archive to install: {thisArchive}");
       }
+
+      ArchiveToInstall = thisArchive;
 
       return thisArchive;
     }
@@ -375,7 +383,7 @@ namespace InstallCMX
       {
         foreach (string s in args)
         {
-          // So if you give 10 arguments, tha last is taken as the build number. No checks at all (so far)
+          // So if you give 10 arguments, the last is taken as the build number. No checks at all (so far)
           Sup.LogDebugMessage($"CommandLineArgs : Build number to install - {s}");
           BuildToInstall = s;
         }

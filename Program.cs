@@ -55,6 +55,7 @@ namespace InstallCMX
       // Initialise, setup logging
       Sup = new Support();
       Sup.LogDebugMessage($"CMX multiplatform installer version {Support.Version()} - {Support.Copyright()}");
+      Console.WriteLine($"CMX multiplatform installer version {Support.Version()} - {Support.Copyright()}");
 
       CommandLineArgs(args);        // Set the version to install
 
@@ -304,7 +305,7 @@ namespace InstallCMX
     string SetArchiveToInstall()
     {
       string[] Archives;
-      string thisArchive;
+      string thisArchive = "";
 
       // Find the zip in the current directory 
       //   If multiple finds then propose the newest, modifiable by the user
@@ -313,16 +314,13 @@ namespace InstallCMX
 
       if (string.IsNullOrEmpty(BuildToInstall))
       {
-        Archives = Directory.GetFiles(".", "CumulusMXDist*.zip");
-
-        thisArchive = SelectArchive(Archives);
+        Archives = Directory.GetFiles(".", "CumulusMX*.zip");
+        if (Archives.Length > 0) thisArchive = SelectArchive(Archives);
       }
       else
       {
-        string ArchiveName = $"CumulusMXDist{BuildToInstall}.zip";
-        Archives = Directory.GetFiles(".", ArchiveName);
-
-        thisArchive = Archives[0];
+        Archives = Directory.GetFiles(".", $"CumulusMX*{BuildToInstall}.zip");
+        if (Archives.Length > 0) thisArchive = Archives[0];
       }
 
       return thisArchive;

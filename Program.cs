@@ -252,6 +252,18 @@ namespace InstallCMX
       return resultDirs;
     } // SearchForCMX
 
+    // Many things on the net but just not good enough. This comes a bit closer :
+    // https://www.pinvoke.net/default.aspx/Structures/REPARSE_DATA_BUFFER.html
+    // https://stackoverflow.com/questions/2302416/how-to-obtain-the-target-of-a-symbolic-link-or-reparse-point-using-net
+    // https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-fscc/b41f1cbf-10df-4a47-98d4-1c52a833d913
+    // http://blog.kalmbach-software.de/2008/02/
+    // https://csharp.hotexamples.com/examples/-/REPARSE_DATA_BUFFER/-/php-reparse_data_buffer-class-examples.html
+    //private bool IsSymbolic(string path)
+    //{
+    //  FileInfo pathInfo = new FileInfo(path);
+    //  return pathInfo.Attributes.HasFlag(FileAttributes.ReparsePoint  && /* Reaprse Point check for Symlink bit */);
+    //}
+
     string ConfirmInstallDir(List<string> InstallDirs)
     {
       string thisInstallDir = "";

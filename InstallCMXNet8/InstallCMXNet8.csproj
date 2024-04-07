@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>InstallCMX.Program</StartupObject>
+    <AssemblyTitle>InstallCMX</AssemblyTitle>
+    <Company>CumulusMX</Company>
+    <Product>InstallCMX</Product>
+    <Copyright>Copyright © Hans Rotttier</Copyright>
+    <AssemblyName>InstallCMX</AssemblyName>
+    <RootNamespace>InstallCMX</RootNamespace>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <AssemblyVersion>2.0.0</AssemblyVersion>
+    <FileVersion>1.0.0</FileVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+  </ItemGroup>
+</Project>
